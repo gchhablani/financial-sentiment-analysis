@@ -2,11 +2,12 @@
 
 ## Potential Ideas
 ### Data Statistics
-- WordClouds after removing Stopwords
-    - Parts-of-Speech, especially Nouns
-    - Financial Terms - buy, sell, debt, funds, invest, stocks, share, gold, property, real estate
-- Top-K words in each PoS category using Stanford PoS
-    - Bar-chart of the word-frequencies
+- [x] WordClouds after removing Stopwords
+    - [x] Parts-of-Speech, especially Nouns
+    - [x] Financial Terms - buy, sell, debt, funds, invest, stocks, share, gold, property, real estate
+- [x] Top-K words in each PoS category using Stanford PoS
+    - [x] Bar-chart of the word-frequencies
+    
 - Noun-verb combinations, possible, need to check how to select one noun/verb from the sentence.
 
 - Demographics vs Risk-Capacity 
