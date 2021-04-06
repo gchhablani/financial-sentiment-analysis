@@ -3,7 +3,10 @@ import torch.nn as nn
 from torch.nn import CrossEntropyLoss
 from transformers import BertModel, BertPreTrainedModel
 
+from src.utils.mapper import configmapper
 
+
+@configmapper.map("models", "bert_features")
 class BertFeatures(BertPreTrainedModel):
     def __init__(self, config, num_features, num_labels):
         self.bert = BertModel(config)
