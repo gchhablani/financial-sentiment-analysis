@@ -1,5 +1,5 @@
 
-.PHONY: env style quality final clean
+.PHONY: env style quality final clean requirements
 
 VENV = finsent-env
 export VIRTUAL_ENV := $(abspath ${VENV})
@@ -11,7 +11,7 @@ ${VENV}:
 env: ${VENV} requirements
 	
 requirements:	
-	pip install --upgrade -r requirements.txt
+	pip install --upgrade -r requirements.txt --find-links https://download.pytorch.org/whl/torch_stable.html 
 
 # black --check --line-length 88 --target-version py38 src ./*.py
 # isort --check-only src ./*.py #Remove these, black and isort contradict each other
