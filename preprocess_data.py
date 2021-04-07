@@ -4,8 +4,12 @@ from sklearn.model_selection import train_test_split
 
 np.random.seed(42)
 
-df = pd.read_csv("../data.csv")
+df = pd.read_csv("../data/text_label_data.csv")
 
+df = df[['text','label']]
+print(df.shape)
+df = df[~(df['label']=='FALSE')]
+print(df.shape)
 train, test = train_test_split(df, test_size=0.2, random_state=42)
 
 # Column Renaming
