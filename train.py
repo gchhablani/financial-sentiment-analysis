@@ -24,6 +24,7 @@ from transformers import (
     TrainingArguments,
 )
 
+from src.datasets import *
 from src.utils.mapper import configmapper
 from src.utils.misc import seed
 
@@ -113,12 +114,12 @@ else:
 if not args.only_predict:
     print("### Loading Model ###")
     model = AutoModelForSequenceClassification.from_pretrained(
-        train_config.model.pretrained_model_name
+        train_config.model.pretrained_model_name, num_labels = 3
     )
 else:
     print("### Loading Model From PreTrained ###")
     model = AutoModelForSequenceClassification.from_pretrained(
-        train_config.trainer.save_model_name
+        train_config.trainer.save_model_name, num_labels = 3
     )
 
 print("### Loading Trainer ###")
@@ -136,6 +137,8 @@ if not args.only_predict:
     trainer.save_model(train_config.trainer.save_model_name)
 
 # Predict
+if not os.path.exists(train_config.dir+"/preds"):
+    os.makedirs(train_config.dir+"/preds")
 if not args.load_predictions:
     print("### Predicting ###")
     raw_predictions = trainer.predict(test_dataset)  # has predictions,label_ids,
@@ -146,7 +149,7 @@ else:
     with open(train_config.misc.raw_predictions_file, "rb") as f:
         raw_predictions = pkl.load(f)
 
-final_predictions = torch.argmax(raw_predictions.predictions, dim=-1).numpy()
+final_predictions = np.argmax(raw_predictions.predictions, axis=-1)
 with open(train_config.misc.final_predictions_file, "wb") as f:
     pkl.dump(final_predictions, f)
 

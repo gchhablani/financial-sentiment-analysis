@@ -1,5 +1,6 @@
 import pandas as pd
 import torch
+import numpy as np
 from torch.utils.data import Dataset
 from transformers import BertTokenizerFast
 
@@ -29,12 +30,14 @@ class FinText(Dataset):
 
     def __getitem__(self, idx):
         text = self.df["text"].iloc[idx]
+        # if text is np.nan:
+        #     text = ""
         label = self.df["label"].iloc[idx]
         tokenized_text = self.tokenizer(text)
-        return idx, tokenized_text, label
+        return tokenized_text, label
 
     def custom_collate_fn(self, batch):
-        ids = []
+        # ids = []
         input_idss = []
         token_type_idss = []
         attention_masks = []
@@ -42,8 +45,8 @@ class FinText(Dataset):
 
         max_len = 0
 
-        for idx, sample, label in batch:
-            ids.append(idx)
+        for sample, label in batch:
+            # ids.append(idx)
             input_idss.append(sample["input_ids"])
             max_len = max(max_len, len(sample["input_ids"]))
             token_type_idss.append(sample["token_type_ids"])
@@ -63,9 +66,9 @@ class FinText(Dataset):
             )
 
         return {
-            "id": torch.tensor(ids),
+            # "id": torch.tensor(ids),
             "input_ids": torch.tensor(input_idss),
             "attention_mask": torch.tensor(attention_masks),
             "token_type_ids": torch.tensor(token_type_idss),
-            "label": torch.tensor(labels),
+            "labels": torch.tensor(labels),
         }

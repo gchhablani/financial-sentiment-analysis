@@ -8,24 +8,24 @@
 - [x] Top-K words in each PoS category using Stanford PoS
     - [x] Bar-chart of the word-frequencies
     
-- Noun-verb combinations, possible, need to check how to select one noun/verb from the sentence.
+- Noun-verb combinations, possible, need to check how to select one noun/verb from the sentence. (To be done)
 
 - Demographics vs Risk-Capacity 
-    - Gender (Bar Chart)
-    - Age (Scatter Plot) or Groups with Bar Char
-    - Marital (Bar Chart)
-    - Religion (Bar Chart)
-    - Income (Scatter Plot) or Groups with Bar Chart
-    - Handwriting Type
+    - [x] Gender (Bar Chart)
+    - [x] Age (Violin Plot)
+    - [x] Marital (Bar Chart)
+    - [x] Religion (Bar Chart)
+    - [x] Income (Bar Chart)
+    - [ ] Handwriting Type
 
 - Radar Chart for Investment Percentages in the MCQ.
-    - Age Groups
-    - Gender
-    - Income Groups
-    - Class Labels
-    - Handwriting Type
+    - [x] Age Groups
+    - [x] Gender
+    - [x] Income Groups
+    - [x] Class Labels
+    - [ ] Handwriting Type
 
-- Categorize from Answers into - Misc, Tour/Travel, Education, MF, B, GCJ, AO, Debt, Ins, Pro, PPF. Plot a radar chart for this against labels, age groups, etc.
+- Categorize from Answers into - Misc, Tour/Travel, Education, MF, B, GCJ, AO, Debt, Ins, Pro, PPF. Plot a radar chart for this against labels, age groups, etc. (To be done)
 
 
 ### Embedding-based Analysis

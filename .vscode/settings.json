@@ -12,7 +12,7 @@
     ],
     "autoDocstring.docstringFormat": "google",
     "autoDocstring.generateDocstringOnEnter": true,
-    "python.pythonPath": "/home/crocoder/Desktop/Financial Sentiment Analysis/financial-sentiment-analysis/finsent-env/bin/python3",
+    "python.pythonPath": "finsent-env/bin/python",
     "python.testing.promptToConfigure": false,
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": false,

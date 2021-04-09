@@ -1,29 +1,32 @@
 #Args
+dir: /content/drive/MyDrive/FSA/results/bert-base
 model:
   pretrained_model_name: bert-base-uncased
 args:
-  output_dir: "/content/drive/MyDrive/FSA/results/bert-base/ckpts"
-  logging_dir: "/content/drive/MyDrive/FSA/results/bert-base/runs"
+  output_dir: ${dir}/ckpts
+  logging_dir: ${dir}/runs
   evaluation_strategy: epoch
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   weight_decay: 0.01
   learning_rate: 3e-5
-  num_train_epochs: 5
+  num_train_epochs: 15
   adam_epsilon: 1e-6
   lr_scheduler_type: polynomial
   logging_first_step: true
-  logging_steps: 500
-  save_steps: 500
+  warmup_ratio: 0.1
+  logging_steps: 20
+  save_steps: 100
+  eval_steps: 20
   seed: 42
-  dataloader_num_workers: 4
+  dataloader_num_workers: 2
 
 trainer:
   pretrained_tokenizer_name: bert-base-uncased
-  save_model_name: "/content/drive/MyDrive/FSA/results/bert-base/bert-base-final"
+  save_model_name: ${dir}/bert-base-final
 misc:
   squad_v2: false
-  raw_predictions_file: "/content/drive/MyDrive/FSA/results/bert-base/preds/raw"
-  acc_metric_file: "/content/drive/MyDrive/FSA/results/bert-base/preds/acc.txt"
-  f1_metric_file: "/content/drive/MyDrive/FSA/results/bert-base/preds/f1.txt"
-  final_predictions_file: "/content/drive/MyDrive/FSA/results/bert-base/preds/final"
+  raw_predictions_file: ${dir}/preds/raw
+  acc_metric_file: ${dir}/preds/acc.txt
+  f1_metric_file: ${dir}/preds/f1.txt
+  final_predictions_file: ${dir}/preds/final
