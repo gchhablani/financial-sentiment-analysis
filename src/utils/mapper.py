@@ -41,6 +41,7 @@ class ConfigMapper:
 
     dicts = {
         "datasets": {},
+        "models": {},
         "schedulers": {},
     }
 

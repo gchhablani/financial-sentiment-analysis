@@ -12,8 +12,10 @@ import argparse
 import json
 import os
 import pickle as pkl
+from collections import Counter
 
 import numpy as np
+import pandas as pd
 import torch
 from omegaconf import OmegaConf
 from sklearn.metrics import accuracy_score, f1_score
@@ -24,9 +26,23 @@ from transformers import (
     TrainingArguments,
 )
 
+from datasets import load_metric
 from src.datasets import *
+from src.models import *
 from src.utils.mapper import configmapper
-from src.utils.misc import seed
+from src.utils.misc import seed, tokenize
+
+f1_metric = load_metric("f1")
+acc_metric = load_metric("accuracy")
+
+
+def compute_metrics(eval_pred):
+    predictions, labels = eval_pred
+    predictions = np.argmax(predictions, axis=1)
+    return {
+        "f1": f1_metric.compute(predictions=predictions, references=labels, average='macro'),
+        "acc": acc_metric.compute(predictions=predictions, references=labels),
+    }
 
 
 class MyEncoder(json.JSONEncoder):
@@ -85,13 +101,34 @@ seed(train_config.args.seed)
 # Load datasets
 print("### Loading Datasets ###")
 
-train_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
-    **dataset_config.train
-)
-test_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
-    **dataset_config.test
-)
+if "bert" in train_config.model_name:
 
+    train_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
+        **dataset_config.train
+    )
+    test_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
+        **dataset_config.test
+    )
+else:
+    train_df = pd.read_csv(dataset_config.train.file_path)
+    test_df = pd.read_csv(dataset_config.test.file_path)
+    df = pd.concat([train_df, test_df])
+    counts = Counter()
+    for index, row in df.iterrows():
+        counts.update(tokenize(row["text"]))
+    vocab2index = {"": 0, "UNK": 1}
+    words = ["", "UNK"]
+    for word in counts:
+        vocab2index[word] = len(words)
+        words.append(word)
+    train_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
+        file_path=dataset_config.train.file_path, vocab2index=vocab2index, words=words
+    )
+    test_dataset = configmapper.get("datasets", dataset_config.dataset_name)(
+        file_path=dataset_config.test.file_path, vocab2index=vocab2index, words=words
+    )
+    vocab_size = len(words)
+    train_config.model.vocab_size = vocab_size
 # Train
 
 if not args.only_predict:
@@ -103,42 +140,73 @@ else:
         os.path.join(train_config.trainer.save_model_name, "training_args.bin")
     )
     print(train_args)
-if not args.only_predict:
-    print("### Loading Tokenizer for Trainer ###")
-    tokenizer = AutoTokenizer.from_pretrained(
-        train_config.trainer.pretrained_tokenizer_name
+
+
+if "bert" in train_config.model_name:
+    if not args.only_predict:
+        print("### Loading Tokenizer for Trainer ###")
+        tokenizer = AutoTokenizer.from_pretrained(
+            train_config.trainer.pretrained_tokenizer_name
+        )
+    else:
+        print("### Loading Tokenizer for Trainer from PreTrained ")
+        tokenizer = AutoTokenizer.from_pretrained(train_config.trainer.save_model_name)
+    if not args.only_predict:
+        print("### Loading Model ###")
+        model = AutoModelForSequenceClassification.from_pretrained(
+            train_config.model.pretrained_model_name, num_labels=3
+        )
+    else:
+        print("### Loading Model From PreTrained ###")
+        model = AutoModelForSequenceClassification.from_pretrained(
+            train_config.trainer.save_model_name, num_labels=3
+        )
+
+    print("### Loading Trainer ###")
+    trainer = Trainer(
+        model,
+        train_args,
+        train_dataset.custom_collate_fn,
+        train_dataset,
+        test_dataset,
+        tokenizer,
+        compute_metrics=compute_metrics,
     )
 else:
-    print("### Loading Tokenizer for Trainer from PreTrained ")
-    tokenizer = AutoTokenizer.from_pretrained(train_config.trainer.save_model_name)
-if not args.only_predict:
-    print("### Loading Model ###")
-    model = AutoModelForSequenceClassification.from_pretrained(
-        train_config.model.pretrained_model_name, num_labels = 3
-    )
-else:
-    print("### Loading Model From PreTrained ###")
-    model = AutoModelForSequenceClassification.from_pretrained(
-        train_config.trainer.save_model_name, num_labels = 3
+    if not args.only_predict:
+        print("### Loading Model ###")
+        model = configmapper.get("models", train_config.model_name)(
+            **train_config.model
+        )
+    else:
+        print("### Loading Model From PreTrained ###")
+        model = configmapper.get("models", train_config.model_name)(
+            **train_config.model
+        )
+        model.load_state_dict(
+            torch.load(
+                os.path.join(train_config.trainer.save_model_name, "pytorch_model.bin")
+            )
+        )
+
+    print("### Loading Trainer ###")
+    trainer = Trainer(
+        model,
+        train_args,
+        train_dataset.custom_collate_fn,
+        train_dataset,
+        test_dataset,
+        compute_metrics=compute_metrics,
     )
 
-print("### Loading Trainer ###")
-trainer = Trainer(
-    model,
-    train_args,
-    train_dataset.custom_collate_fn,
-    train_dataset,
-    test_dataset,
-    tokenizer,
-)
 if not args.only_predict:
     print("### Training ###")
     trainer.train()
     trainer.save_model(train_config.trainer.save_model_name)
 
 # Predict
-if not os.path.exists(train_config.dir+"/preds"):
-    os.makedirs(train_config.dir+"/preds")
+if not os.path.exists(train_config.dir + "/preds"):
+    os.makedirs(train_config.dir + "/preds")
 if not args.load_predictions:
     print("### Predicting ###")
     raw_predictions = trainer.predict(test_dataset)  # has predictions,label_ids,
@@ -153,12 +221,12 @@ final_predictions = np.argmax(raw_predictions.predictions, axis=-1)
 with open(train_config.misc.final_predictions_file, "wb") as f:
     pkl.dump(final_predictions, f)
 
-references = [ex["label"] for ex in test_dataset]
+references = [ex[-1] for ex in test_dataset]
 
 
 print("### Saving Metrics ###")
 with open(train_config.misc.acc_metric_file, "w") as f:
     json.dump(accuracy_score(references, final_predictions), f)
 with open(train_config.misc.f1_metric_file, "w") as f:
-    json.dump(f1_score(references, final_predictions), f)
+    json.dump(f1_score(references, final_predictions, average="macro"), f)
 print("### Finished ###")

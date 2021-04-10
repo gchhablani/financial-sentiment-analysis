@@ -1,6 +1,6 @@
+import numpy as np
 import pandas as pd
 import torch
-import numpy as np
 from torch.utils.data import Dataset
 from transformers import BertTokenizerFast
 
@@ -15,7 +15,7 @@ class FinText(Dataset):
         data_frame=None,
         tokenizer_name="bert-base-uncased",
     ):
-
+        super().__init__()
         if data_frame is None and file_path is None:
             raise ValueError("One of `file_path` or `data_frame` must be provided.")
         elif data_frame is None:

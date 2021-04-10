@@ -1,21 +1,28 @@
 #Args
-model_name: bert-base
-dir: /content/drive/MyDrive/FSA/results/bert-base
+model_name: lstm_model
+dir: ./results/lstm-model
 model:
-  pretrained_model_name: bert-base-uncased
+  vocab_size: null
+  embedding_dim: 200
+  hidden_size: 200
+  lstm_num_layers: 1
+  bidirectional: true
+  dropout: 0.4
+  num_labels: 3
+  
 args:
   output_dir: ${dir}/ckpts
   logging_dir: ${dir}/runs
-  evaluation_strategy: epoch
+  evaluation_strategy: steps
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   weight_decay: 0.01
-  learning_rate: 3e-5
+  learning_rate: 1e-3
   num_train_epochs: 15
   adam_epsilon: 1e-6
-  lr_scheduler_type: polynomial
+  lr_scheduler_type: cosine_with_restarts
   logging_first_step: true
-  warmup_ratio: 0.1
+  warmup_ratio: 0.0
   logging_steps: 20
   save_steps: 100
   eval_steps: 20
@@ -23,8 +30,7 @@ args:
   dataloader_num_workers: 2
 
 trainer:
-  pretrained_tokenizer_name: bert-base-uncased
-  save_model_name: ${dir}/bert-base-final
+  save_model_name: ${dir}/lstm-model-final
 misc:
   squad_v2: false
   raw_predictions_file: ${dir}/preds/raw
