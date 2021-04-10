@@ -11,7 +11,7 @@ print(df.shape)
 df = df[~(df["label"] == "FALSE")]
 df.dropna(inplace=True)
 print(df.shape)
-train, test = train_test_split(df, test_size=0.2, random_state=42)
+train, test = train_test_split(df, test_size=0.2, random_state=42, stratify = df["label"])
 
 # Column Renaming
 

@@ -40,7 +40,9 @@ def compute_metrics(eval_pred):
     predictions, labels = eval_pred
     predictions = np.argmax(predictions, axis=1)
     return {
-        "f1": f1_metric.compute(predictions=predictions, references=labels, average='macro'),
+        "f1": f1_metric.compute(
+            predictions=predictions, references=labels, average="weighted"
+        ),
         "acc": acc_metric.compute(predictions=predictions, references=labels),
     }
 
@@ -228,5 +230,5 @@ print("### Saving Metrics ###")
 with open(train_config.misc.acc_metric_file, "w") as f:
     json.dump(accuracy_score(references, final_predictions), f)
 with open(train_config.misc.f1_metric_file, "w") as f:
-    json.dump(f1_score(references, final_predictions, average="macro"), f)
+    json.dump(f1_score(references, final_predictions, average="weighted"), f)
 print("### Finished ###")
