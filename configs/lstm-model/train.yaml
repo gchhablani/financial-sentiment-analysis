@@ -3,9 +3,9 @@ model_name: lstm_model
 dir: ./results/lstm-model
 model:
   vocab_size: null
-  embedding_dim: 200
-  hidden_size: 200
-  lstm_num_layers: 1
+  embedding_dim: 300
+  hidden_size: 300
+  lstm_num_layers: 2
   bidirectional: true
   dropout: 0.4
   num_labels: 3
