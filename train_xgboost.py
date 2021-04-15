@@ -1,4 +1,5 @@
 # https://chrisfotache.medium.com/text-classification-in-python-pipelines-nlp-nltk-tf-idf-xgboost-and-more-b83451a327e0
+# https://www.kaggle.com/gilbar/xgboost-learning-curve
 import os
 import pickle as pkl
 
@@ -29,9 +30,12 @@ class TextSelector(BaseEstimator, TransformerMixin):
 STOPWORDS = stopwords.words("english")
 
 if __name__ == "__main__":
+    task = "sentiment_analysis"
+    model_path = f"results/{task}/xgboost/models"
+    direc = f"results/{task}/xgboost/preds"
     np.random.seed(42)
-    train_df = pd.read_csv("../data/train.csv")
-    test_df = pd.read_csv("../data/test.csv")
+    train_df = pd.read_csv(f"../data/{task}/train.csv")
+    test_df = pd.read_csv(f"../data/{task}/test.csv")
     X_train = train_df
     X_test = test_df
     Y_train = train_df["label"]
@@ -82,15 +86,28 @@ if __name__ == "__main__":
     )
 
     classifier.fit(X_train, Y_train)
+    train_preds = classifier.predict(X_train)
     preds = classifier.predict(X_test)
 
-    if not os.path.exists("results/xgboost/preds"):
-        os.makedirs("results/xgboost/preds")
+    if not os.path.exists(direc + "/train"):
+        os.makedirs(direc + "/train")
 
-    with open("results/xgboost/model", "wb") as f:
+    if not os.path.exists(direc + "/test"):
+        os.makedirs(direc + "/test")
+
+    with open(model_path, "wb") as f:
         pkl.dump(classifier, f)
 
-    with open("results/xgboost/preds/acc.txt", "w") as f:
+    with open(f"{direc}/train/acc.txt", "w") as f:
+        f.write(str(accuracy_score(Y_train, train_preds)))
+    with open(f"{direc}/train/f1_weighted.txt", "w") as f:
+        f.write(str(f1_score(Y_train, train_preds, average="weighted")))
+    with open(f"{direc}/train/f1_macro.txt", "w") as f:
+        f.write(str(f1_score(Y_train, train_preds, average="macro")))
+
+    with open(f"{direc}/test/acc.txt", "w") as f:
         f.write(str(accuracy_score(Y_test, preds)))
-    with open("results/xgboost/preds/f1.txt", "w") as f:
+    with open(f"{direc}/test/f1_weighted.txt", "w") as f:
         f.write(str(f1_score(Y_test, preds, average="weighted")))
+    with open(f"{direc}/test/f1_macro.txt", "w") as f:
+        f.write(str(f1_score(Y_test, preds, average="macro")))

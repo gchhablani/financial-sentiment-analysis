@@ -1,0 +1,40 @@
+#Args
+model_name: finbert-base
+dir: ./results/sentiment_analysis/finbert-base
+model:
+  pretrained_model_name: ProsusAI/finbert
+args:
+  output_dir: ${dir}/ckpts
+  logging_dir: ${dir}/runs
+  evaluation_strategy: steps
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  weight_decay: 0.01
+  learning_rate: 1e-5
+  num_train_epochs: 15
+  adam_epsilon: 1e-6
+  lr_scheduler_type: linear
+  logging_first_step: true
+  warmup_ratio: 0.0
+  logging_steps: 100
+  save_steps: 100
+  save_total_limit: 2
+  eval_steps: 100
+  seed: 42
+  dataloader_num_workers: 2
+  # load_best_model_at_end: true
+  # metric_for_best_model: eval_f1
+
+trainer:
+  pretrained_tokenizer_name: ProsusAI/finbert
+  save_model_name: ${dir}/finbert-base-final
+misc:
+  squad_v2: false
+  raw_predictions_file: ${dir}/test/preds/raw
+  acc_metric_test_file: ${dir}/test/preds/acc.txt
+  f1_macro_metric_test_file: ${dir}/test/preds/f1_macro.txt
+  f1_weighted_metric_test_file: ${dir}/test/preds/f1_weighted.txt
+  acc_metric_train_file: ${dir}/train/preds/acc.txt
+  f1_macro_metric_train_file: ${dir}/train/preds/f1_macro.txt
+  f1_weighted_metric_train_file: ${dir}/train/preds/f1_weighted.txt
+  final_predictions_file: ${dir}/test/preds/final

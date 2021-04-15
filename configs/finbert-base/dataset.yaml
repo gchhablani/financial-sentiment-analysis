@@ -1,6 +1,0 @@
-dataset_name: fin_text
-train:
-  file_path: ../data/train.csv
-  tokenizer_name: ProsusAI/finbert
-  file_path: ../data/test.csv
-  tokenizer_name: ProsusAI/finbert

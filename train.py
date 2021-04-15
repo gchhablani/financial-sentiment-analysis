@@ -39,12 +39,15 @@ acc_metric = load_metric("accuracy")
 def compute_metrics(eval_pred):
     predictions, labels = eval_pred
     predictions = np.argmax(predictions, axis=1)
-    return {
-        "f1": f1_metric.compute(
-            predictions=predictions, references=labels, average="weighted"
-        ),
-        "acc": acc_metric.compute(predictions=predictions, references=labels),
-    }
+    # return {
+    #     "f1": f1_metric.compute(
+    #         predictions=predictions, references=labels, average="weighted"
+    #     ),
+    #     "acc": acc_metric.compute(predictions=predictions, references=labels),
+    # }
+    return f1_metric.compute(
+        predictions=predictions, references=labels, average="macro"
+    )
 
 
 class MyEncoder(json.JSONEncoder):
@@ -142,7 +145,7 @@ else:
         os.path.join(train_config.trainer.save_model_name, "training_args.bin")
     )
     print(train_args)
-
+print(train_args)
 
 if "bert" in train_config.model_name:
     if not args.only_predict:
@@ -207,11 +210,14 @@ if not args.only_predict:
     trainer.save_model(train_config.trainer.save_model_name)
 
 # Predict
-if not os.path.exists(train_config.dir + "/preds"):
-    os.makedirs(train_config.dir + "/preds")
+if not os.path.exists(train_config.dir + "train/preds"):
+    os.makedirs(train_config.dir + "/train/preds")
+if not os.path.exists(train_config.dir + "test/preds"):
+    os.makedirs(train_config.dir + "/test/preds")
 if not args.load_predictions:
     print("### Predicting ###")
     raw_predictions = trainer.predict(test_dataset)  # has predictions,label_ids,
+    train_predictions = trainer.predict(train_dataset)
     with open(train_config.misc.raw_predictions_file, "wb") as f:
         pkl.dump(raw_predictions, f)
 else:
@@ -222,13 +228,25 @@ else:
 final_predictions = np.argmax(raw_predictions.predictions, axis=-1)
 with open(train_config.misc.final_predictions_file, "wb") as f:
     pkl.dump(final_predictions, f)
-
 references = [ex[-1] for ex in test_dataset]
 
+train_final_predictions = np.argmax(train_predictions.predictions, axis=-1)
+train_references = [ex[-1] for ex in train_dataset]
 
 print("### Saving Metrics ###")
-with open(train_config.misc.acc_metric_file, "w") as f:
+with open(train_config.misc.acc_metric_test_file, "w") as f:
     json.dump(accuracy_score(references, final_predictions), f)
-with open(train_config.misc.f1_metric_file, "w") as f:
+with open(train_config.misc.f1_macro_metric_test_file, "w") as f:
+    json.dump(f1_score(references, final_predictions, average="macro"), f)
+with open(train_config.misc.f1_weighted_metric_test_file, "w") as f:
     json.dump(f1_score(references, final_predictions, average="weighted"), f)
+
+with open(train_config.misc.acc_metric_train_file, "w") as f:
+    json.dump(accuracy_score(train_references, train_final_predictions), f)
+with open(train_config.misc.f1_macro_metric_train_file, "w") as f:
+    json.dump(f1_score(train_references, train_final_predictions, average="macro"), f)
+with open(train_config.misc.f1_weighted_metric_train_file, "w") as f:
+    json.dump(
+        f1_score(train_references, train_final_predictions, average="weighted"), f
+    )
 print("### Finished ###")

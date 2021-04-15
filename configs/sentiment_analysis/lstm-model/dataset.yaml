@@ -1,0 +1,5 @@
+dataset_name: fin_text
+train:
+  file_path: ../data/sentiment_analysis/train.csv
+test:
+  file_path: ../data/sentiment_analysis/test.csv

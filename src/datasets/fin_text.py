@@ -14,6 +14,7 @@ class FinText(Dataset):
         file_path=None,
         data_frame=None,
         tokenizer_name="bert-base-uncased",
+        **tokenizer_params,
     ):
         super().__init__()
         if data_frame is None and file_path is None:
@@ -22,6 +23,8 @@ class FinText(Dataset):
             self.df = pd.read_csv(file_path)
         else:
             self.df = data_frame
+
+        self.tokenizer_params = tokenizer_params
 
         self.tokenizer = BertTokenizerFast.from_pretrained(tokenizer_name)
 
@@ -33,7 +36,7 @@ class FinText(Dataset):
         # if text is np.nan:
         #     text = ""
         label = self.df["label"].iloc[idx]
-        tokenized_text = self.tokenizer(text)
+        tokenized_text = self.tokenizer(text, **self.tokenizer_params)
         return tokenized_text, label
 
     def custom_collate_fn(self, batch):

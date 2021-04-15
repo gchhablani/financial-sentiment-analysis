@@ -1,7 +1,7 @@
 dataset_name: fin_text
 train:
-  file_path: ../data/train.csv
+  file_path: ../data/sentiment_analysis/train.csv
   tokenizer_name: bert-base-uncased
 test:
-  file_path: ../data/test.csv
+  file_path: ../data/sentiment_analysis/test.csv
   tokenizer_name: bert-base-uncased

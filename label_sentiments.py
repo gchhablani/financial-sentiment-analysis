@@ -26,18 +26,10 @@ lists = [
     contraining_list,
 ]
 data = pd.read_csv(data_file)
-data = data.drop(["Cleaned"], axis=1)
 data.fillna("", inplace=True)
-data = data[
-    data["If you won a lottery for Rs 1 crore tomorrow how would you spend it?"] != ""
-]
+data = data[data["text"] != ""]
 columns = [
-    "If you won a lottery for Rs 1 crore tomorrow how would you spend it?",
-    "Unnamed: 3",
-    "Unnamed: 4",
-    "Unnamed: 5",
-    "Unnamed: 6",
-    "Unnamed: 7",
+    "text",
 ]
 label_lists = [[], [], [], [], [], [], []]
 
@@ -61,7 +53,7 @@ for value in tqdm(data[columns].values):
                 res += temp
         label_lists[list_idx].append(res)
 
-data["Text"] = texts
+data["text"] = texts
 data["Negative"] = label_lists[0]
 data["Positive"] = label_lists[1]
 data["Uncertainty"] = label_lists[2]
@@ -76,7 +68,7 @@ data.to_csv(
     index=False,
     columns=[
         "Image File",
-        "Text",
+        "text",
         "Negative",
         "Positive",
         "Uncertainty",
