@@ -1,6 +1,6 @@
 #Args
 model_name: lstm-model
-dir: ./results/sentiment_analysis/lstm-model
+dir: ./results/risk_profiling/lstm-model
 model:
   vocab_size: null
   embedding_dim: 300

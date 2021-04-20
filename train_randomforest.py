@@ -8,10 +8,10 @@ import pandas as pd
 from nltk.corpus import stopwords
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.decomposition import TruncatedSVD
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
-from xgboost import XGBClassifier
 
 from src.utils.misc import tokenize
 
@@ -31,8 +31,8 @@ STOPWORDS = stopwords.words("english")
 
 if __name__ == "__main__":
     task = "sentiment_analysis"
-    model_path = f"results/{task}/xgboost/models"
-    direc = f"results/{task}/xgboost/preds"
+    model_path = f"results/{task}/randomforest/models"
+    direc = f"results/{task}/randomforest/preds"
     np.random.seed(42)
     train_df = pd.read_csv(f"../data/{task}/train.csv")
     test_df = pd.read_csv(f"../data/{task}/test.csv")
@@ -75,11 +75,9 @@ if __name__ == "__main__":
             ),
             (
                 "clf",
-                XGBClassifier(
+                RandomForestClassifier(
                     max_depth=3,
                     n_estimators=100,
-                    learning_rate=0.1,
-                    use_label_encoder=False,
                 ),
             ),
         ]

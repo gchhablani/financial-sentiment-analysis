@@ -1,15 +1,8 @@
 #Args
-model_name: lstm-model
-dir: ./results/sentiment_analysis/lstm-model
+model_name: pretrain-bert-base-train
+dir: ./results/risk_profiling/pretrain-bert-base-train
 model:
-  vocab_size: null
-  embedding_dim: 300
-  hidden_size: 300
-  lstm_num_layers: 2
-  bidirectional: true
-  dropout: 0.4
-  num_labels: 3
-  
+  pretrained_model_name: ./results/pretraining/bert-base-train/bert-base-train-final
 args:
   output_dir: ${dir}/ckpts
   logging_dir: ${dir}/runs
@@ -17,7 +10,7 @@ args:
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   weight_decay: 0.01
-  learning_rate: 1e-3
+  learning_rate: 1e-4
   num_train_epochs: 5
   adam_epsilon: 1e-6
   lr_scheduler_type: linear
@@ -29,11 +22,12 @@ args:
   eval_steps: 30
   seed: 42
   dataloader_num_workers: 2
-  # load_best_model_at_end: true
-  # metric_for_best_model: eval_f1
+  load_best_model_at_end: true
+  metric_for_best_model: eval_f1
 
 trainer:
-  save_model_name: ${dir}/lstm-model-final
+  pretrained_tokenizer_name: bert-base-uncased
+  save_model_name: ${dir}/pretrain-bert-base-train-final
 misc:
   squad_v2: false
   raw_predictions_file: ${dir}/test/preds/raw

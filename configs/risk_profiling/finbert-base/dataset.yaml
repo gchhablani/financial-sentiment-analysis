@@ -1,0 +1,7 @@
+dataset_name: fin_text
+train:
+  file_path: ../data/risk_profiling/train.csv
+  tokenizer_name: ProsusAI/finbert
+test:
+  file_path: ../data/risk_profiling/test.csv
+  tokenizer_name: ProsusAI/finbert

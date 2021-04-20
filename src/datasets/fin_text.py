@@ -26,6 +26,8 @@ class FinText(Dataset):
 
         self.tokenizer_params = tokenizer_params
 
+        self.return_token_type_ids = "distilbert" not in tokenizer_name
+
         self.tokenizer = BertTokenizerFast.from_pretrained(tokenizer_name)
 
     def __len__(self):
@@ -68,10 +70,19 @@ class FinText(Dataset):
                 max_len - len(token_type_idss[i])
             )
 
-        return {
-            # "id": torch.tensor(ids),
-            "input_ids": torch.tensor(input_idss),
-            "attention_mask": torch.tensor(attention_masks),
-            "token_type_ids": torch.tensor(token_type_idss),
-            "labels": torch.tensor(labels),
-        }
+        if self.return_token_type_ids:
+
+            return {
+                # "id": torch.tensor(ids),
+                "input_ids": torch.tensor(input_idss),
+                "attention_mask": torch.tensor(attention_masks),
+                "token_type_ids": torch.tensor(token_type_idss),
+                "labels": torch.tensor(labels),
+            }
+        else:
+            return {
+                # "id": torch.tensor(ids),
+                "input_ids": torch.tensor(input_idss),
+                "attention_mask": torch.tensor(attention_masks),
+                "labels": torch.tensor(labels),
+            }

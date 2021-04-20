@@ -10,16 +10,16 @@ args:
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 8
   weight_decay: 0.01
-  learning_rate: 1e-5
-  num_train_epochs: 15
+  learning_rate: 1e-4
+  num_train_epochs: 5
   adam_epsilon: 1e-6
   lr_scheduler_type: linear
   logging_first_step: true
   warmup_ratio: 0.0
-  logging_steps: 100
-  save_steps: 100
-  save_total_limit: 2
-  eval_steps: 100
+  logging_steps: 30
+#  save_steps: 100
+#  save_total_limit: 2
+  eval_steps: 30
   seed: 42
   dataloader_num_workers: 2
   # load_best_model_at_end: true
@@ -34,7 +34,9 @@ misc:
   acc_metric_test_file: ${dir}/test/preds/acc.txt
   f1_macro_metric_test_file: ${dir}/test/preds/f1_macro.txt
   f1_weighted_metric_test_file: ${dir}/test/preds/f1_weighted.txt
+  confusion_matrix_test_file: ${dir}/test/preds/confusion_matrix.txt
   acc_metric_train_file: ${dir}/train/preds/acc.txt
   f1_macro_metric_train_file: ${dir}/train/preds/f1_macro.txt
   f1_weighted_metric_train_file: ${dir}/train/preds/f1_weighted.txt
   final_predictions_file: ${dir}/test/preds/final
+  confusion_matrix_train_file: ${dir}/train/preds/confusion_matrix.txt

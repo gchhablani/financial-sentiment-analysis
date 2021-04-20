@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import torch
 from omegaconf import OmegaConf
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -210,9 +210,9 @@ if not args.only_predict:
     trainer.save_model(train_config.trainer.save_model_name)
 
 # Predict
-if not os.path.exists(train_config.dir + "train/preds"):
+if not os.path.exists(train_config.dir + "/train/preds"):
     os.makedirs(train_config.dir + "/train/preds")
-if not os.path.exists(train_config.dir + "test/preds"):
+if not os.path.exists(train_config.dir + "/test/preds"):
     os.makedirs(train_config.dir + "/test/preds")
 if not args.load_predictions:
     print("### Predicting ###")
@@ -235,18 +235,22 @@ train_references = [ex[-1] for ex in train_dataset]
 
 print("### Saving Metrics ###")
 with open(train_config.misc.acc_metric_test_file, "w") as f:
-    json.dump(accuracy_score(references, final_predictions), f)
+    f.write(str(accuracy_score(references, final_predictions)))
 with open(train_config.misc.f1_macro_metric_test_file, "w") as f:
-    json.dump(f1_score(references, final_predictions, average="macro"), f)
+    f.write(str(f1_score(references, final_predictions, average="macro")))
 with open(train_config.misc.f1_weighted_metric_test_file, "w") as f:
-    json.dump(f1_score(references, final_predictions, average="weighted"), f)
+    f.write(str(f1_score(references, final_predictions, average="weighted")))
+with open(train_config.misc.confusion_matrix_test_file, "w") as f:
+    f.write(str(confusion_matrix(references, final_predictions)))
 
 with open(train_config.misc.acc_metric_train_file, "w") as f:
-    json.dump(accuracy_score(train_references, train_final_predictions), f)
+    f.write(str(accuracy_score(train_references, train_final_predictions)))
 with open(train_config.misc.f1_macro_metric_train_file, "w") as f:
-    json.dump(f1_score(train_references, train_final_predictions, average="macro"), f)
+    f.write(str(f1_score(train_references, train_final_predictions, average="macro")))
 with open(train_config.misc.f1_weighted_metric_train_file, "w") as f:
-    json.dump(
-        f1_score(train_references, train_final_predictions, average="weighted"), f
+    f.write(
+        str(f1_score(train_references, train_final_predictions, average="weighted"))
     )
+with open(train_config.misc.confusion_matrix_train_file, "w") as f:
+    f.write(str(confusion_matrix(train_references, train_final_predictions)))
 print("### Finished ###")

@@ -1,0 +1,7 @@
+dataset_name: pre_fin_text
+train:
+  file_path: ../data/pretraining/data.csv
+  tokenizer_name: bert-base-uncased
+  max_length: 512
+  truncation: true
+  padding: max_length
