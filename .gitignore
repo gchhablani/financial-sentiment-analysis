@@ -129,4 +129,10 @@ dmypy.json
 .pyre/
 
 finsent-env/
-results/*
+results/pretraining/*
+results/*/*/*-final/
+results/*/*/runs/
+results/*/*/*/preds/final
+results/*/*/*/preds/raw
+results/*/*/models
+results/*/*/ckpts/
