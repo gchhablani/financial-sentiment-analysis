@@ -1,4 +1,5 @@
 # https://raw.githubusercontent.com/crux82/ganbert-pytorch/main/GANBERT_pytorch.ipynb
+# [WIP], not finished
 import torch
 from torch.nn import Dropout, LeakyReLU, Linear, Module, Sequential
 from transformers import AutoModel

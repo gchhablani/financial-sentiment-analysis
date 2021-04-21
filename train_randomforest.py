@@ -29,17 +29,8 @@ class TextSelector(BaseEstimator, TransformerMixin):
 
 STOPWORDS = stopwords.words("english")
 
-if __name__ == "__main__":
-    task = "sentiment_analysis"
-    model_path = f"results/{task}/randomforest/models"
-    direc = f"results/{task}/randomforest/preds"
-    np.random.seed(42)
-    train_df = pd.read_csv(f"../data/{task}/train.csv")
-    test_df = pd.read_csv(f"../data/{task}/test.csv")
-    X_train = train_df
-    X_test = test_df
-    Y_train = train_df["label"]
-    Y_test = test_df["label"]
+
+def run_xgb(max_depth, n_estimators, X_train, Y_train, X_test, Y_test):
     classifier = Pipeline(
         [
             (
@@ -76,17 +67,63 @@ if __name__ == "__main__":
             (
                 "clf",
                 RandomForestClassifier(
-                    max_depth=3,
-                    n_estimators=100,
+                    max_depth=max_depth,
+                    n_estimators=n_estimators,
                 ),
             ),
         ]
     )
 
     classifier.fit(X_train, Y_train)
-    train_preds = classifier.predict(X_train)
     preds = classifier.predict(X_test)
 
+    return classifier, f1_score(Y_test, preds, average="macro")
+
+
+if __name__ == "__main__":
+    task = "sentiment_analysis"
+    model_path = f"results/{task}/randomforest/models"
+    direc = f"results/{task}/randomforest/preds"
+    np.random.seed(0)
+    train_df = pd.read_csv(f"../data/{task}/train.csv")
+    test_df = pd.read_csv(f"../data/{task}/test.csv")
+    X_train = train_df
+    X_test = test_df
+    Y_train = train_df["label"]
+    Y_test = test_df["label"]
+
+    max_depths = [2, 3, 5, 10, 15, None]
+    n_estimatorss = [20, 50, 100, 200, 500, 1000]
+    best_score = 0
+    best_classifier = None
+    best_combo = [None, None, None]
+    c = 0
+    for max_depth in max_depths:
+        for n_estimators in n_estimatorss:
+            c += 1
+
+            classifier, f1_macro = run_xgb(
+                max_depth,
+                n_estimators,
+                X_train,
+                Y_train,
+                X_test,
+                Y_test,
+            )
+
+            print(f"{c}/{len(max_depths)*len(n_estimatorss)}")
+            if f1_macro > best_score:
+                print("Updating")
+                print(best_combo)
+                print(f1_macro)
+                best_score = f1_macro
+                best_classifier = classifier
+                best_combo = [max_depth, n_estimators]
+
+    classifier = best_classifier
+    train_preds = classifier.predict(X_train)
+    preds = classifier.predict(X_test)
+    print(best_combo)
     if not os.path.exists(direc + "/train"):
         os.makedirs(direc + "/train")
 

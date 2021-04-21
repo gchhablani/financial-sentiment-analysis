@@ -6,8 +6,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 
 # task = "sentiment_analysis"
 task = "risk_profiling"
-# direc = f"results/{task}/baseline_neutral/preds"
-direc = f"results/{task}/baseline_random/preds"
+direc = f"results/{task}/baseline_neutral/preds"
+# direc = f"results/{task}/baseline_random/preds"
 if __name__ == "__main__":
     np.random.seed(42)
     # train_df = pd.read_csv("../data/train.csv")
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     if "random" in direc:
         preds = np.random.randint(low=0, high=3, size=Y_test.shape[0])
     else:
-        preds = np.ones(Y_test.shape[0]) * 1
+        preds = np.ones(Y_test.shape[0]) * 2  # neutral
     if not os.path.exists(direc):
         os.makedirs(direc)
     with open(f"{direc}/acc.txt", "w") as f:

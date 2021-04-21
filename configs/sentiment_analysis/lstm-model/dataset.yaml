@@ -1,4 +1,4 @@
-dataset_name: fin_text
+dataset_name: fin_text_lstm
 train:
   file_path: ../data/sentiment_analysis/train.csv
 test:

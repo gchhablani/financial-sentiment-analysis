@@ -144,8 +144,6 @@ else:
     train_args = torch.load(
         os.path.join(train_config.trainer.save_model_name, "training_args.bin")
     )
-    print(train_args)
-print(train_args)
 
 if "bert" in train_config.model_name:
     if not args.only_predict:

@@ -11,19 +11,20 @@ args:
   per_device_eval_batch_size: 8
   weight_decay: 0.01
   learning_rate: 1e-4
-  num_train_epochs: 5
+  num_train_epochs: 15
   adam_epsilon: 1e-6
   lr_scheduler_type: linear
   logging_first_step: true
   warmup_ratio: 0.0
-  logging_steps: 30
-#  save_steps: 100
+  logging_steps: 50
+  save_steps: 50
 #  save_total_limit: 2
-  eval_steps: 30
+  eval_steps: 50
   seed: 42
   dataloader_num_workers: 2
   load_best_model_at_end: true
   metric_for_best_model: eval_f1
+  greater_is_better: true
 
 trainer:
   pretrained_tokenizer_name: bert-base-uncased
