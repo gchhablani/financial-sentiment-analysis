@@ -1,0 +1,11 @@
+Model,Train,Test
+XGBoost,1.0,0.391
+LSTM,1.0,0.501
+BERT,0.183,0.186
+RandomForest,1.0,0.441
+Baseline (Neu),0.186,
+Baseline (Rndm),0.359,
+BERT-PT,1.0,0.344
+FinBERT,0.885,0.311
+BERT-PT-TR,0.874,0.332
+DistilBERT,1.0,0.291
