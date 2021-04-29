@@ -1,4 +1,15 @@
 {
+    "agricultural": [
+        "agriculture",
+        "agricultural"
+    ],
+    "sip": [
+        "sip"
+    ],
+    "retirement": [
+        "retirement",
+        "retire"
+    ],
     "business": [
         "business",
         "start",
@@ -9,21 +20,20 @@
         "bissuness",
         "buisness"
     ],
+    "army": [
+        "army"
+    ],
     "charity": [
         "charity",
         "help",
-        "need",
         "donate",
         "give",
         "needy",
         "poor",
-        "social",
-        "society",
         "welfare",
         "helping",
         "ngo",
         "orphanage",
-        "army",
         "chairity",
         "donation",
         "needed",
@@ -31,11 +41,8 @@
         "cherety",
         "cherity",
         "contribute",
-        "country",
         "donating",
         "donet",
-        "environment",
-        "hospital",
         "maid",
         "ngo's",
         "orphan",
@@ -71,58 +78,83 @@
         "learn",
         "library"
     ],
+    "environment": [
+        "environemnt",
+        "natural",
+        "trees"
+    ],
+    "bonds": [
+        "bond",
+        "bonds"
+    ],
     "equity": [
         "return",
+        "returns",
         "stock",
         "share",
         "equity",
         "risk",
-        "bond",
         "multicap",
         "portfolio",
         "reliance",
         "risk-free",
         "script",
         "tc",
+        "risk",
         "tcs"
     ],
-    "expenditure": [
-        "spend",
+    "buy": [
         "buy",
-        "purchase",
-        "spending",
         "buying",
-        "tax",
-        "expense",
-        "leisure",
-        "luxury",
-        "spent",
-        "medical",
+        "purchase",
         "purchasing",
-        "rent",
+        "buing"
+    ],
+    "tax": [
+        "tax",
+        "taxes"
+    ],
+    "marriage": [
+        "marriage"
+    ],
+    "leisure": [
         "shopping",
-        "emergency",
+        "gift",
+        "shop",
+        "liquor",
         "enjoy",
-        "expenditure",
-        "food",
-        "item",
-        "marriage",
-        "outing",
-        "buing",
-        "embergency",
-        "emi",
         "enjoyed",
         "enjoying",
         "enjoyment",
         "entertainment",
+        "fun",
+        "food"
+    ],
+    "luxury": [
+        "luxury",
+        "luxuries",
+        "luxurious",
+        "luxury!"
+    ],
+    "medical expenses": [
+        "medical",
+        "hospital"
+    ],
+    "spend": [
+        "spend",
+        "spending",
+        "personal use",
+        "personal things",
+        "expense",
+        "expenses",
+        "spent",
+        "rent",
+        "expenditure",
+        "item",
+        "emi",
         "expence",
         "expenditrue",
         "fee",
-        "gamble",
-        "gambling",
-        "gift",
-        "liquor",
-        "shop",
         "sponsor"
     ],
     "family": [
@@ -133,8 +165,6 @@
         "wife",
         "husband",
         "brother",
-        "community",
-        "dog",
         "famiely",
         "girl",
         "groom",
@@ -148,6 +178,8 @@
         "deposit",
         "bank",
         "fixed",
+        "regular return",
+        "regular income",
         "fd",
         "f.d",
         "deposite",
@@ -155,13 +187,26 @@
         "deposites",
         "diposite"
     ],
+    "gadgets": [
+        "gadgets"
+    ],
+    "silver": [
+        "silver"
+    ],
     "gold": [
         "gold",
         "coin",
+        "safe",
         "jewellery",
         "jewelery",
-        "jwellery",
-        "silver"
+        "jwellery"
+    ],
+    "debentures": [
+        "debentures",
+        "debenture"
+    ],
+    "laboratory": [
+        "laboratory"
     ],
     "house": [
         "house",
@@ -182,30 +227,40 @@
     ],
     "insurance": [
         "insurance",
-        "policy"
+        "policy",
+        "mediclaim"
+    ],
+    "cryptocurrency": [
+        "cryptocurrencys",
+        "cryptocurrency",
+        "cryptocurrencies",
+        "crypto"
+    ],
+    "pets": [
+        "dogs",
+        "cow",
+        "cats"
+    ],
+    "e-gold": [
+        "e-gold"
     ],
     "investment": [
         "invest",
         "investment",
         "secure",
         "investing",
-        "pension",
         "security",
         "invested",
         "gain",
         "health",
-        "ppf",
         "capital",
         "grow",
         "growth",
         "profit",
         "provident",
-        "cryptocurrencys",
-        "e-gold",
         "intvestin",
         "inves",
         "investe",
-        "mediclaim",
         "reinvest",
         "roi"
     ],
@@ -214,7 +269,9 @@
         "pay",
         "debt",
         "due",
+        "loans",
         "liability",
+        "liabilities",
         "repay",
         "paying",
         "payment",
@@ -234,6 +291,9 @@
         "amt",
         "penny"
     ],
+    "secure future": [
+        "future"
+    ],
     "mutual funds": [
         "mutual fund",
         "mutual funds",
@@ -246,6 +306,23 @@
         "m.f.",
         "mf."
     ],
+    "pension fund": [
+        "pension funds",
+        "pension fund",
+        "pension"
+    ],
+    "post office investment": [
+        "post"
+    ],
+    "ppf": [
+        "ppf",
+        "govt fund",
+        "govt funds"
+    ],
+    "emergency": [
+        "emergency",
+        "embergency"
+    ],
     "property": [
         "real estate",
         "property",
@@ -257,6 +334,12 @@
         "building",
         "construct",
         "residential"
+    ],
+    "society": [
+        "society",
+        "social",
+        "community",
+        "country"
     ],
     "saving": [
         "save",
@@ -276,7 +359,8 @@
         "visit",
         "visiting",
         "holiday",
-        "travell"
+        "travell",
+        "outing"
     ],
     "vehicles": [
         "car",
