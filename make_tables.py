@@ -67,7 +67,7 @@ df.rename({"index": "Model", "test": "Test", "train": "Train"}, inplace=1, axis=
 df["Model"] = df["Model"].apply(model_name_mapping.get)
 df["Test"] = df["Test"].round(3)
 df["Train"] = df["Train"].round(3)
-df.to_csv("risk_profiling.csv", columns=['Model','Train','Test'], index=False)
+df.to_csv("risk_profiling.csv", columns=["Model", "Train", "Test"], index=False)
 
 name_to_info_dict = {}
 for root, dirs, files in os.walk("./results/sentiment_analysis/"):
@@ -121,4 +121,4 @@ df.rename({"index": "Model", "test": "Test", "train": "Train"}, inplace=1, axis=
 df["Model"] = df["Model"].apply(model_name_mapping.get)
 df["Test"] = df["Test"].round(3)
 df["Train"] = df["Train"].round(3)
-df.to_csv("sentiment_analysis.csv", columns=['Model','Train','Test'], index=False)
+df.to_csv("sentiment_analysis.csv", columns=["Model", "Train", "Test"], index=False)
