@@ -8,4 +8,5 @@ Baseline (Rndm),0.359,
 BERT-PT,1.0,0.344
 FinBERT,0.885,0.311
 BERT-PT-TR,0.874,0.332
+DecisionTree,1.0,0.414
 DistilBERT,1.0,0.291

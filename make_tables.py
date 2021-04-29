@@ -14,6 +14,7 @@ model_name_mapping = {
     "distilbert-base": "DistilBERT",
     "baseline_neutral": "Baseline (Neu)",
     "baseline_random": "Baseline (Rndm)",
+    "dtree": "DecisionTree",
 }
 name_to_info_dict = {}
 for root, dirs, files in os.walk("./results/risk_profiling/"):
